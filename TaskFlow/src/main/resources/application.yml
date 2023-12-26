@@ -1,0 +1,11 @@
+# Server Configuration
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/taskflow?createDatabaseIfNotExist=true
+    username: postgres
+    password: 12
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
