@@ -3,9 +3,9 @@ package com.taskflow.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,23 +14,24 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
-
 @Service
 public class JwtService {
-    private final String SECRET_KEY = "secret";
+    // Use the Keys class to generate a secure key
+    private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
     public String extractUsername(String jwt) {
-        return extractClaim(jwt,Claims::getSubject);
+        return extractClaim(jwt, Claims::getSubject);
     }
 
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
-                .setSigningKey(getSignInKey())
+                .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
+
     private String generateToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails
@@ -40,10 +41,11 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*24*60))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 24 * 60))
+                .signWith(SECRET_KEY)
                 .compact();
     }
+
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
@@ -51,10 +53,6 @@ public class JwtService {
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
-    }
-
-    private Key getSignInKey() {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
