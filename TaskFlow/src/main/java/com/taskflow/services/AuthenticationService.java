@@ -1,13 +1,15 @@
-package com.taskflow.controller;
+package com.taskflow.services;
 
 import com.taskflow.config.JwtService;
 import com.taskflow.entities.Role;
 import com.taskflow.entities.Users;
+import com.taskflow.dto.request.AuthenticationRequest;
+import com.taskflow.dto.request.RegisterRequest;
+import com.taskflow.dto.response.AuthenticationResponse;
 import com.taskflow.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

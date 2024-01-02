@@ -1,5 +1,9 @@
 package com.taskflow.controller;
 
+import com.taskflow.dto.request.AuthenticationRequest;
+import com.taskflow.dto.request.RegisterRequest;
+import com.taskflow.dto.response.AuthenticationResponse;
+import com.taskflow.services.AuthenticationService;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

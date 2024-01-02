@@ -1,4 +1,4 @@
-package com.taskflow.controller;
+package com.taskflow.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthenticationRequest {
+
     private String email;
     private String password;
 }
