@@ -20,11 +20,9 @@ import java.util.Set;
 public class TaskController {
     private final TaskService userTaskService;
     @PostMapping
-    public void createTask(@RequestBody
-                                          CreateTaskRequest createTaskRequest)
-            throws InstantiationException, IllegalAccessException {
-        Task task = TaskMapper.INSTANCE.newInstance().createTaskRequestToTask(createTaskRequest);
-        Set<Tags> tags = TagMapper.INSTANCE.newInstance().tagDtoListToTagList(createTaskRequest.tags());
+    public void createTask(@RequestBody CreateTaskRequest createTaskRequest) {
+        Task task = TaskMapper.INSTANCE.createTaskRequestToTask(createTaskRequest);
+        Set<Tags> tags = TagMapper.INSTANCE.tagDtoListToTagList(createTaskRequest.tags());
         Task taskSaved = userTaskService.createTask(task, tags);
         System.out.println(taskSaved);
     }

@@ -28,7 +28,7 @@ public class TaskServiceImpl implements TaskService {
         validateStartDateTask(task.getStartDate());
         validateEndDateTask(task.getStartDate(), task.getEndDate());
         task.setTaskStatus(TaskStatus.TODO);
-        if (tag.size() < 2)
+        if (false)
             throw new CustomValidationException("you should at least give 2 tag for this task");
         Task tasksaved = taskRepository.save(task);
         addTagToTask(tasksaved, tag);
@@ -36,11 +36,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void addTagToTask(Task task, Set<Tags> tag){
+    public void addTagToTask(Task task, Set<Tags> tag) {
         List<Tags> tagsSaved = tagService.createTags(tag);
-        task.setTags((Set<Tags>) tagsSaved);
+        task.setTags(Set.copyOf(tagsSaved));
     }
-
 
 
     private void validateStartDateTask(LocalDate startDate) {
